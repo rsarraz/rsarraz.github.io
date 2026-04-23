@@ -1,230 +1,613 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rémy Sarrazin – Carte de visite digitale</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rémy Sarrazin – Carte de visite digitale</title>
+  <style>
+    :root{
+      --egis-green:#9dbc1f;
+      --egis-dark:#07151a;
+      --egis-deep:#0d2228;
+      --bg:#f4f5f2;
+      --card:#ffffff;
+      --text:#202427;
+      --muted:#6d7478;
+      --border:#e4e8e1;
+      --shadow:0 12px 32px rgba(8,22,26,.08);
+      --radius:22px;
+    }
 
-<style>
-:root{
-  --egis-green:#9dbc1f;
-  --border:#e4e8e1;
-  --text:#202427;
-}
+    *{
+      box-sizing:border-box;
+    }
 
-body{
-  margin:0;
-  font-family:Arial, sans-serif;
-  background:#f4f5f2;
-}
+    body{
+      margin:0;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(157,188,31,.08), transparent 22%),
+        linear-gradient(180deg, #f7f8f4 0%, #f1f3ee 100%);
+    }
 
-.page{
-  max-width:1100px;
-  margin:auto;
-  padding:20px;
-}
+    .page{
+      width:min(1180px, calc(100vw - 28px));
+      margin:24px auto 40px;
+    }
 
-.main-card{
-  background:white;
-  border-radius:25px;
-  overflow:hidden;
-  box-shadow:0 10px 30px rgba(0,0,0,0.08);
-}
+    .main-card{
+      background:var(--card);
+      border-radius:30px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(0,0,0,.03);
+    }
 
-.banner{
-  height:180px;
-  background:linear-gradient(120deg,#08161f,#49610b,#b2cb26);
-  position:relative;
-}
+    .banner{
+      position:relative;
+      min-height:190px;
+      background:
+        linear-gradient(100deg, rgba(0,0,0,.35), rgba(0,0,0,.06)),
+        linear-gradient(120deg, #08161f 0%, #0b1b2a 22%, #0e2a27 46%, #5b760f 78%, #b2cb26 100%);
+      overflow:hidden;
+    }
 
-.brand{
-  position:absolute;
-  top:20px;
-  left:25px;
-}
+    .banner::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(92deg, transparent 50%, rgba(185,210,40,.95) 58%, rgba(210,227,89,.35) 63%, transparent 72%);
+      mix-blend-mode:screen;
+      opacity:.9;
+    }
 
-.brand img{
-  height:80px;
-}
+    .brand{
+      position:absolute;
+      left:28px;
+      top:18px;
+      z-index:2;
+      display:flex;
+      align-items:center;
+    }
 
-.content{
-  padding:30px;
-}
+    .brand img{
+      height:82px;
+      width:auto;
+      display:block;
+    }
 
-.identity{
-  display:flex;
-  gap:25px;
-  margin-top:-70px;
-  align-items:center;
-}
+    .content{
+      padding:0 34px 34px;
+      position:relative;
+    }
 
-.photo{
-  width:150px;
-  height:150px;
-  border-radius:50%;
-  border:6px solid white;
-}
+    .identity{
+      display:grid;
+      grid-template-columns: 180px 1fr;
+      gap:30px;
+      align-items:end;
+      margin-top:-72px;
+      position:relative;
+      z-index:2;
+    }
 
-h1{
-  margin:0;
-  font-size:2.5rem;
-}
+    .photo-wrap{
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      background:#fff;
+      padding:6px;
+      box-shadow:0 10px 24px rgba(0,0,0,.12);
+    }
 
-.role{
-  color:#89aa17;
-  font-weight:600;
-}
+    .photo-wrap img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      border-radius:50%;
+      display:block;
+    }
 
-.intro{
-  margin:25px 0;
-}
+    h1{
+      margin:0 0 8px;
+      font-size:3rem;
+      line-height:1;
+      letter-spacing:-.03em;
+    }
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:15px;
-}
+    .role{
+      color:#89aa17;
+      font-size:1.1rem;
+      font-weight:600;
+      margin-bottom:14px;
+    }
 
-.item{
-  border:1px solid var(--border);
-  padding:20px;
-  border-radius:15px;
-  text-align:center;
-  text-decoration:none;
-  color:black;
-}
+    .location{
+      color:var(--muted);
+      font-size:1rem;
+    }
 
-.qr{
-  text-align:center;
-  margin-top:25px;
-}
+    .intro{
+      margin:26px 0 28px 0;
+      font-size:1.15rem;
+      line-height:1.7;
+      max-width:980px;
+    }
 
-.qr img{
-  width:180px;
-  border:4px solid var(--egis-green);
-  border-radius:15px;
-}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:18px;
+      margin-bottom:18px;
+    }
 
-.how{
-  margin-top:30px;
-  padding:25px;
-  border:1px solid var(--border);
-  border-radius:20px;
-}
+    .mini-grid-wrap{
+      display:grid;
+      grid-template-columns: 1fr 260px;
+      gap:18px;
+      align-items:start;
+    }
 
-.steps-title{
-  color:var(--egis-green);
-  font-weight:bold;
-  font-size:1.5rem;
-  margin-bottom:20px;
-}
+    .mini-grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:18px;
+      align-items:stretch;
+    }
 
-.steps{
-  display:flex;
-}
+    .item,
+    .qr-card,
+    .how{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:0 4px 14px rgba(15,31,18,.04);
+    }
 
-.step{
-  flex:1;
-  display:flex;
-  gap:10px;
-  padding:0 15px;
-}
+    .item{
+      padding:24px 20px;
+      text-align:center;
+      text-decoration:none;
+      color:inherit;
+      transition:.2s transform, .2s box-shadow;
+      min-height:146px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
 
-.step:not(:last-child){
-  border-right:1px solid var(--border);
-}
+    .item:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 24px rgba(15,31,18,.08);
+    }
 
-.badge{
-  width:35px;
-  height:35px;
-  background:var(--egis-green);
-  color:white;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-}
+    .icon{
+      font-size:2.2rem;
+      margin-bottom:14px;
+      line-height:1;
+    }
 
-@media(max-width:700px){
-  .grid{
-    grid-template-columns:1fr;
-  }
+    .item .main{
+      font-weight:700;
+      font-size:1.05rem;
+      word-break:break-word;
+    }
 
-  .steps{
-    flex-direction:column;
-  }
+    .item .sub{
+      color:var(--muted);
+      margin-top:8px;
+    }
 
-  .step{
-    border:none;
-    padding:10px 0;
-  }
-}
-</style>
+    .cta-banner{
+      margin-top:24px;
+      background:
+        linear-gradient(120deg, #062229 0%, #0c2c2d 44%, #11312b 100%);
+      color:#fff;
+      overflow:hidden;
+      position:relative;
+      padding:28px 30px;
+      border:none;
+      border-radius:var(--radius);
+      box-shadow:0 4px 14px rgba(15,31,18,.04);
+    }
+
+    .cta-banner::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg, transparent 62%, rgba(157,188,31,.14) 100%);
+      pointer-events:none;
+    }
+
+    .cta-banner .line1{
+      display:flex;
+      align-items:center;
+      gap:22px;
+      position:relative;
+      z-index:1;
+    }
+
+    .logo-box{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-width:210px;
+      padding-right:20px;
+      border-right:1px solid rgba(255,255,255,.2);
+      flex-shrink:0;
+    }
+
+    .logo-box img{
+      height:64px;
+      width:auto;
+      display:block;
+    }
+
+    .cta-text{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+
+    .cta-title{
+      font-size:1.2rem;
+      font-weight:700;
+      line-height:1.35;
+      margin-bottom:6px;
+    }
+
+    .cta-sub{
+      color:rgba(255,255,255,.85);
+      font-size:.98rem;
+      line-height:1.35;
+    }
+
+    .skills{
+      margin-top:22px;
+      text-align:center;
+    }
+
+    .skills h3{
+      font-size:1rem;
+      letter-spacing:.08em;
+      color:#3e4346;
+      font-weight:700;
+      margin:0 0 16px;
+    }
+
+    .chips{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+
+    .chip{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:12px 15px;
+      color:#3a3f42;
+      box-shadow:0 3px 10px rgba(15,31,18,.03);
+    }
+
+    .footer{
+      text-align:center;
+      color:#6e7578;
+      margin-top:18px;
+      font-size:1rem;
+    }
+
+    .qr-card{
+      padding:20px;
+      text-align:center;
+      position:sticky;
+      top:24px;
+    }
+
+    .qr-card h3{
+      margin:10px 0 8px;
+      color:#89aa17;
+      font-size:1.9rem;
+      line-height:1.05;
+    }
+
+    .qr-card p{
+      color:#4f575b;
+      line-height:1.5;
+      margin:0 0 18px;
+      font-size:1.05rem;
+    }
+
+    .qr-box{
+      border:4px solid var(--egis-green);
+      border-radius:20px;
+      padding:14px;
+      background:#fff;
+      display:inline-block;
+    }
+
+    .qr-box img{
+      width:180px;
+      height:180px;
+      display:block;
+    }
+
+    .how{
+      margin-top:24px;
+      padding:26px 30px;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:0 4px 14px rgba(15,31,18,.04);
+    }
+
+    .steps-title{
+      color:#8ead14;
+      font-weight:800;
+      margin-bottom:20px;
+      font-size:1.6rem;
+    }
+
+    .steps{
+      display:flex;
+      width:100%;
+    }
+
+    .step{
+      flex:1;
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      padding:0 20px;
+    }
+
+    .step:not(:last-child){
+      border-right:1px solid var(--border);
+    }
+
+    .badge{
+      width:36px;
+      height:36px;
+      border-radius:50%;
+      background:#9dbc1f;
+      color:#fff;
+      display:grid;
+      place-items:center;
+      font-weight:800;
+      flex:0 0 auto;
+    }
+
+    @media (max-width: 980px){
+      .mini-grid-wrap{
+        grid-template-columns:1fr;
+      }
+
+      .qr-card{
+        position:static;
+      }
+    }
+
+    @media (max-width: 760px){
+      .page{
+        width:min(100vw - 18px, 1000px);
+        margin:10px auto 24px;
+      }
+
+      .content{
+        padding:0 18px 22px;
+      }
+
+      .identity{
+        grid-template-columns:1fr;
+        gap:18px;
+        margin-top:-56px;
+      }
+
+      .photo-wrap{
+        width:130px;
+        height:130px;
+      }
+
+      .brand{
+        left:18px;
+        top:16px;
+      }
+
+      .brand img{
+        height:56px;
+      }
+
+      h1{
+        font-size:2.15rem;
+      }
+
+      .intro{
+        font-size:1rem;
+      }
+
+      .grid,
+      .mini-grid{
+        grid-template-columns:1fr;
+      }
+
+      .cta-banner .line1{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:16px;
+      }
+
+      .logo-box{
+        border-right:none;
+        padding-right:0;
+        min-width:auto;
+      }
+
+      .logo-box img{
+        height:54px;
+      }
+
+      .qr-box img{
+        width:160px;
+        height:160px;
+      }
+
+      .steps{
+        flex-direction:column;
+      }
+
+      .step{
+        padding:12px 0;
+      }
+
+      .step:not(:last-child){
+        border-right:none;
+        border-bottom:1px solid var(--border);
+        margin-bottom:14px;
+        padding-bottom:14px;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="page">
+    <div class="main-card">
+      <div class="banner">
+        <div class="brand">
+          <img src="logo_egis.png" alt="Logo Egis">
+        </div>
+      </div>
 
-<div class="page">
-<div class="main-card">
+      <div class="content">
+        <div class="identity">
+          <div class="photo-wrap">
+            <img src="remy_profile.png" alt="Photo de Rémy Sarrazin">
+          </div>
+          <div>
+            <h1>Rémy Sarrazin</h1>
+            <div class="role">Chef de projet Télécom - Chargé d'étude Télécom</div>
+            <div class="location">📍 Lyon, France</div>
+          </div>
+        </div>
 
-<div class="banner">
-  <div class="brand">
-    <img src="logo_egis.png">
-  </div>
-</div>
+        <div class="intro">
+          Passionné par les systèmes ferroviaires et les solutions télécom innovantes,
+          j'accompagne la conception et le déploiement de réseaux critiques au service
+          de la mobilité durable.
+        </div>
 
-<div class="content">
+        <div class="grid">
+          <a class="item" href="tel:+33658083422">
+            <div class="icon">📞</div>
+            <div class="main">06 58 08 34 22</div>
+            <div class="sub">Appeler</div>
+          </a>
 
-<div class="identity">
-  <img src="remy_profile.png" class="photo">
-  <div>
-    <h1>Rémy Sarrazin</h1>
-    <div class="role">Chef de projet Télécom - Chargé d'étude Télécom</div>
-    <div>📍 Lyon</div>
-  </div>
-</div>
+          <a class="item" href="mailto:remy.sarrazin@egis-group.com">
+            <div class="icon">✉️</div>
+            <div class="main">remy.sarrazin@egis-group.com</div>
+            <div class="sub">Envoyer un email</div>
+          </a>
 
-<div class="intro">
-Passionné par les systèmes ferroviaires et les solutions télécom innovantes,
-j'accompagne la conception et le déploiement de réseaux critiques.
-</div>
+          <a class="item" href="https://www.linkedin.com/in/remy-sarrazin/" target="_blank" rel="noopener">
+            <div class="icon">in</div>
+            <div class="main">linkedin.com/in/remy-sarrazin</div>
+            <div class="sub">LinkedIn</div>
+          </a>
+        </div>
 
-<div class="grid">
-  <a class="item" href="tel:+33658083422">📞<br>Appeler</a>
-  <a class="item" href="mailto:remy.sarrazin@egis-group.com">✉️<br>Email</a>
-  <a class="item" href="https://www.linkedin.com/in/remy-sarrazin/">LinkedIn</a>
-</div>
+        <div class="mini-grid-wrap">
+          <div>
+            <div class="mini-grid">
+              <a class="item" href="https://www.egis-group.com/fr" target="_blank" rel="noopener">
+                <div class="icon">🌐</div>
+                <div class="main">egis-group.com</div>
+                <div class="sub">Site web</div>
+              </a>
 
-<div class="qr">
-  <h3>Scanner</h3>
-  <img src="qr_carte_remy_final.png">
-</div>
+              <a class="item" href="contact.vcf" download>
+                <div class="icon">⬇️</div>
+                <div class="main">Ajouter au contact</div>
+                <div class="sub">Fichier .vcf</div>
+              </a>
 
-<div class="how">
-  <div class="steps-title">COMMENT ÇA MARCHE ?</div>
+              <a class="item" href="https://maps.google.com/?q=Lyon,France" target="_blank" rel="noopener">
+                <div class="icon">📍</div>
+                <div class="main">Lyon, France</div>
+                <div class="sub">Localisation</div>
+              </a>
+            </div>
 
-  <div class="steps">
-    <div class="step">
-      <div class="badge">1</div>
-      <div><strong>Scannez</strong><br>le QR code</div>
+            <div class="cta-banner">
+              <div class="line1">
+                <div class="logo-box">
+                  <img src="logo_egis.png" alt="Logo Egis">
+                </div>
+
+                <div class="cta-text">
+                  <div class="cta-title">Imaginer et construire un avenir durable</div>
+                  <div class="cta-sub">Mobilité • Infrastructures • Environnement • Bâtiment</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="skills">
+              <h3>COMPÉTENCES CLÉS</h3>
+              <div class="chips">
+                <div class="chip">Télécom ferroviaire</div>
+                <div class="chip">Réseaux critiques</div>
+                <div class="chip">Système</div>
+                <div class="chip">Gestion de projet</div>
+                <div class="chip">Coordination</div>
+              </div>
+            </div>
+
+            <div class="footer">© 2026 Rémy Sarrazin – Carte de visite digitale</div>
+          </div>
+
+          <div class="qr-card">
+            <h3>SCANNEZ-MOI</h3>
+            <p>pour accéder directement à ma carte digitale</p>
+            <div class="qr-box">
+              <img src="qr_carte_remy_final.png" alt="QR code vers la carte digitale">
+            </div>
+          </div>
+        </div>
+
+        <div class="how">
+          <div class="steps-title">COMMENT ÇA MARCHE ?</div>
+
+          <div class="steps">
+            <div class="step">
+              <div class="badge">1</div>
+              <div>
+                <strong>Scannez le QR code</strong><br>
+                avec votre téléphone
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="badge">2</div>
+              <div>
+                <strong>Accédez à ma carte</strong><br>
+                en un instant
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="badge">3</div>
+              <div>
+                <strong>Enregistrez mes coordonnées</strong><br>
+                en un clic
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div class="step">
-      <div class="badge">2</div>
-      <div><strong>Accédez</strong><br>à la carte</div>
-    </div>
-
-    <div class="step">
-      <div class="badge">3</div>
-      <div><strong>Enregistrez</strong><br>le contact</div>
-    </div>
   </div>
-</div>
-
-</div>
-</div>
-</div>
-
 </body>
 </html>
